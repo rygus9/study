@@ -1,4 +1,5 @@
 import { FirebaseApp, getApp, initializeApp } from "firebase/app"
+import { getFirestore } from "firebase/firestore"
 
 export let app: FirebaseApp
 // Your web app's Firebase configuration
@@ -16,3 +17,7 @@ try {
 } catch (err) {
   app = initializeApp(firebaseConfig, "app")
 }
+
+const firebase = initializeApp(firebaseConfig)
+export const db = getFirestore(app)
+export default firebase

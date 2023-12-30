@@ -9,9 +9,11 @@ import PostNewPage from "pages/posts/new"
 import PostEditPage from "pages/posts/edit"
 import { useState } from "react"
 
-export default function Router() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+interface RouterProps {
+  isAuthenticated: boolean
+}
 
+export default function Router({ isAuthenticated }: RouterProps) {
   return (
     <Routes>
       {isAuthenticated ? (
@@ -28,8 +30,6 @@ export default function Router() {
             element={<PostEditPage></PostEditPage>}
           />
           <Route path="/profile" element={<ProfilePage></ProfilePage>} />
-          <Route path="/login" element={<LoginPage></LoginPage>} />
-          <Route path="/signup" element={<SignupPage></SignupPage>} />
           <Route
             path="*"
             element={<Navigate replace to="/"></Navigate>}

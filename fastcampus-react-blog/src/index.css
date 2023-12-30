@@ -130,9 +130,21 @@ footer a:hover {
   font-size: 16px;
 }
 
+.post__text--prewrap {
+  white-space: pre-wrap;
+}
+
 .post__list a {
   text-decoration: none;
   color: black;
+}
+
+.post__no-post {
+  padding: 24px;
+  text-align: center;
+  color: gray;
+  border: 1px solid #f2f2f2;
+  border-radius: 20px;
 }
 
 .post__utils-box {
@@ -228,6 +240,8 @@ footer a:hover {
 .profile__logout {
   color: gray;
   font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .profile__logout:focus,
@@ -434,4 +448,35 @@ input:checked + .carousel__slide-container .nav label {
 .form__link:focus,
 .form__link:hover {
   color: black;
+}
+
+.form__error {
+  color: red;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  border: 5px solid #2563eb;
+  border-radius: 50%;
+  z-index: 9999;
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
