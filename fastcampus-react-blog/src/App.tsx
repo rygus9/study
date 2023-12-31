@@ -11,7 +11,6 @@ function App() {
   const auth = getAuth(app)
   const [init, setInit] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(!!auth?.currentUser)
-  console.log(db)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

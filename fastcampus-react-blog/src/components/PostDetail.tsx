@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { PostProps } from "./PostList"
-import { doc, getDoc } from "firebase/firestore"
+import { deleteDoc, doc, getDoc } from "firebase/firestore"
 import { db } from "firebaseApp"
 import Loader from "./Loader"
 import AuthContext from "context/AuthContext"
+import { toast } from "react-toastify"
 
 export default function PostDetail() {
-  const params = useParams()
+  const { id } = useParams()
   const { user } = useContext(AuthContext)
   const [post, setPost] = useState<PostProps | null>(null)
+  const navigate = useNavigate()
 
   const getPost = async (id: string) => {
     const docRef = doc(db, "post", id)
@@ -22,13 +24,18 @@ export default function PostDetail() {
   }
 
   useEffect(() => {
-    if (params?.id) {
-      getPost(params.id)
+    if (id) {
+      getPost(id)
     }
-  }, [params?.id])
+  }, [id])
 
-  const handleDelete = () => {
-    console.log("delete")
+  const handleDelete = async () => {
+    const confirm = window.confirm("해당 게시글을 삭제하겠습니까?")
+    if (confirm && post && post.id) {
+      await deleteDoc(doc(db, "post", post.id))
+      toast.success("게시글 성공하였습니다.")
+      navigate("/")
+    }
   }
 
   return (
@@ -42,18 +49,25 @@ export default function PostDetail() {
               <div className="post__author-name">{post.email}</div>
               <div className="post__date">{post.createdAt}</div>
             </div>
-            {user?.email === post.email && (
+            {(user?.email === post.email || post.category) && (
               <div className="post__utils-box">
-                <div
-                  className="post__delete"
-                  role="presentation"
-                  onClick={handleDelete}
-                >
-                  삭제
-                </div>
-                <div className="post__edit">
-                  <Link to={`/posts/edit/1`}>수정</Link>
-                </div>
+                {post.category && (
+                  <div className="post__category">{post.category}</div>
+                )}
+                {user?.email === post.email && (
+                  <>
+                    <div
+                      className="post__delete"
+                      role="presentation"
+                      onClick={handleDelete}
+                    >
+                      삭제
+                    </div>
+                    <div className="post__edit">
+                      <Link to={`/posts/edit/${id}`}>수정</Link>
+                    </div>
+                  </>
+                )}
               </div>
             )}
             <div className="post__text post__text--prewrap">{post.content}</div>
