@@ -6,6 +6,7 @@ import { db } from "firebaseApp"
 import Loader from "./Loader"
 import AuthContext from "context/AuthContext"
 import { toast } from "react-toastify"
+import Comments from "./Comments"
 
 export default function PostDetail() {
   const { id } = useParams()
@@ -42,36 +43,41 @@ export default function PostDetail() {
     <>
       <div className="post__detail">
         {post ? (
-          <div className="post__box">
-            <div className="post__title">{post.title}</div>
-            <div className="post__profile-box">
-              <div className="post__profile"></div>
-              <div className="post__author-name">{post.email}</div>
-              <div className="post__date">{post.createdAt}</div>
-            </div>
-            {(user?.email === post.email || post.category) && (
-              <div className="post__utils-box">
-                {post.category && (
-                  <div className="post__category">{post.category}</div>
-                )}
-                {user?.email === post.email && (
-                  <>
-                    <div
-                      className="post__delete"
-                      role="presentation"
-                      onClick={handleDelete}
-                    >
-                      삭제
-                    </div>
-                    <div className="post__edit">
-                      <Link to={`/posts/edit/${id}`}>수정</Link>
-                    </div>
-                  </>
-                )}
+          <>
+            <div className="post__box">
+              <div className="post__title">{post.title}</div>
+              <div className="post__profile-box">
+                <div className="post__profile"></div>
+                <div className="post__author-name">{post.email}</div>
+                <div className="post__date">{post.createdAt}</div>
               </div>
-            )}
-            <div className="post__text post__text--prewrap">{post.content}</div>
-          </div>
+              {(user?.email === post.email || post.category) && (
+                <div className="post__utils-box">
+                  {post.category && (
+                    <div className="post__category">{post.category}</div>
+                  )}
+                  {user?.email === post.email && (
+                    <>
+                      <div
+                        className="post__delete"
+                        role="presentation"
+                        onClick={handleDelete}
+                      >
+                        삭제
+                      </div>
+                      <div className="post__edit">
+                        <Link to={`/posts/edit/${id}`}>수정</Link>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+              <div className="post__text post__text--prewrap">
+                {post.content}
+              </div>
+            </div>
+            <Comments post={post} getPost={getPost}></Comments>
+          </>
         ) : (
           <Loader />
         )}
